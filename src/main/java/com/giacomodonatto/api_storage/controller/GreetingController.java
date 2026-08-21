@@ -66,7 +66,7 @@ public class GreetingController {
      *         serializa a JSON en el cuerpo de una respuesta 200.
      */
     @GetMapping("/api/v1/saludo")
-    public GreetingResponse greet(@RequestParam(name = "name", defaultValue = DEFAULT_NAME) String name) {
+    public GreetingResponse greet(@RequestParam(name = "nombre", defaultValue = DEFAULT_NAME) String name) {
         return new GreetingResponse("Hola, " + name + "!");
     }
 }

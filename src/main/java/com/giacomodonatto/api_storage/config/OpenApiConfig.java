@@ -35,14 +35,14 @@ import org.springframework.context.annotation.Configuration;
  * restart de devtools) usa su propio compilador incremental y nunca ejecuta
  * ese goal, así que el archivo no existe ahí. Con inyección directa la app
  * no arranca en ese escenario; con {@link ObjectProvider} se degrada a
- * {@link #VERSION_SIN_BUILD_INFO} en desarrollo local y usa la versión real
+ * {@link #NO_BUILD_INFO_VERSION} en desarrollo local y usa la versión real
  * en todo lo demás, que es lo único que importa para el issue.
  */
 @Configuration
 public class OpenApiConfig {
 
     /** Versión mostrada cuando no corrió el build-info de Maven (ver arriba). */
-    static final String VERSION_SIN_BUILD_INFO = "dev";
+    static final String NO_BUILD_INFO_VERSION = "dev";
 
     private final ObjectProvider<BuildProperties> buildProperties;
 
@@ -57,7 +57,7 @@ public class OpenApiConfig {
      * de escribirse acá a mano, para que quede sincronizada con la versión
      * declarada en {@code pom.xml} sin mantenimiento manual; si ese bean no
      * está disponible (ver Javadoc de la clase) cae a
-     * {@link #VERSION_SIN_BUILD_INFO}.
+     * {@link #NO_BUILD_INFO_VERSION}.
      *
      * @return el documento {@link OpenAPI} con los metadatos de la API, que
      *         springdoc completa luego con los paths y schemas detectados en
@@ -66,7 +66,7 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI apiStorageOpenApi() {
         BuildProperties properties = this.buildProperties.getIfAvailable();
-        String version = (properties != null) ? properties.getVersion() : VERSION_SIN_BUILD_INFO;
+        String version = (properties != null) ? properties.getVersion() : NO_BUILD_INFO_VERSION;
         return new OpenAPI()
                 .info(new Info()
                         .title("API Storage")

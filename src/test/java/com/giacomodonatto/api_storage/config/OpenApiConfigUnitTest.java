@@ -32,7 +32,7 @@ class OpenApiConfigUnitTest {
     void caeAVersionPlaceholderCuandoBuildPropertiesNoExiste() {
         OpenAPI openApi = new OpenApiConfig(providerCon(null)).apiStorageOpenApi();
 
-        assertThat(openApi.getInfo().getVersion()).isEqualTo(OpenApiConfig.VERSION_SIN_BUILD_INFO);
+        assertThat(openApi.getInfo().getVersion()).isEqualTo(OpenApiConfig.NO_BUILD_INFO_VERSION);
     }
 
     @SuppressWarnings("unchecked")

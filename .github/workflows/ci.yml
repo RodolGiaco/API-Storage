@@ -1,0 +1,54 @@
+# Nombre que aparece en la pestaña "Actions" de GitHub.
+name: CI
+
+# CUÁNDO corre. Dos disparadores distintos y a propósito:
+on:
+  # 1. En cada push a una rama que tenga un PR abierto contra main.
+  #    Este es el que te bloquea el merge si falla.
+  pull_request:
+    branches: [main]
+  # 2. En cada push directo a main. Red de seguridad: si algo se coló,
+  #    te enterás igual.
+  push:
+    branches: [main]
+
+# Permisos mínimos para el token del workflow. Por defecto GitHub da más de lo
+# necesario; leer el repo es todo lo que este job precisa.
+permissions:
+  contents: read
+
+jobs:
+  build:
+    # El nombre que vas a marcar como "required status check" cuando protejas main.
+    name: build & test
+    runs-on: ubuntu-latest
+
+    steps:
+      # Trae el código del repo a la máquina del runner. Sin esto no hay nada que compilar.
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # Instala el JDK y, con cache: maven, guarda ~/.m2 entre corridas.
+      # Sin el cache, cada build vuelve a bajar todas las dependencias (2-3 min extra).
+      - name: Configurar JDK 21
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      # --batch-mode: sin barras de progreso, logs legibles.
+      # verify: compila, corre los tests y ejecuta las verificaciones del build.
+      #         Es más que `test` y menos que `install`: no ensucia el repositorio local.
+      - name: Build y tests
+        run: ./mvnw --batch-mode verify
+
+      # Deja los reportes descargables aunque los tests fallen (por eso el if).
+      # Cuando el CI falle y en el log no se entienda por qué, están acá.
+      - name: Publicar reportes de tests
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reportes-tests
+          path: '**/target/surefire-reports/*.xml'
+          if-no-files-found: ignore

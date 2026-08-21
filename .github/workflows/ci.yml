@@ -47,7 +47,7 @@ jobs:
       # Cuando el CI falle y en el log no se entienda por qué, están acá.
       - name: Publicar reportes de tests
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: reportes-tests
           path: '**/target/surefire-reports/*.xml'

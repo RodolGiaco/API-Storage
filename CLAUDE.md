@@ -98,7 +98,7 @@ Ejemplo del nivel esperado:
  * {@code final} y construir la clase en un test sin levantar el contexto.
  */
 @Service
-public class PedidoService {
+public class PedidoService {}
 ```
 
 Además:
@@ -158,7 +158,7 @@ Sin líneas de atribución ni co-autoría.
 - Si un PR pasa de ~400 líneas de diff, proponer cómo partirlo.
 - Cuando una decisión tenga alternativas razonables, nombrarlas y decir por qué
   se eligió esta. Ese razonamiento va al Javadoc o al README, no se pierde en el chat.
-- El codigo se escribe en ingles la explicacion javadoc y descripciones explicativas en español
+- El codigo se escribe en ingles, la explicacion javadoc y descripciones explicativas en español
 ---
 
 ## No tocar sin avisar

@@ -4,12 +4,12 @@ API REST de gestión de clientes, productos y pedidos, construida con Spring Boo
 sobre una arquitectura en capas, con validación, manejo estructurado de errores,
 tests de integración y documentación OpenAPI.
 
-<!-- Insertá acá los badges cuando el CI esté verde:
-[![CI](https://github.com/USUARIO/tienda-api/actions/workflows/ci.yml/badge.svg)](https://github.com/USUARIO/tienda-api/actions/workflows/ci.yml)
--->
+[![CI](https://github.com/RodolGiaco/API-Storage/actions/workflows/ci.yml/badge.svg)](https://github.com/RodolGiaco/API-Storage/actions/workflows/ci.yml)
 
 ![Java](https://img.shields.io/badge/Java-21-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.x-green)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED)
 
 ---
 
@@ -71,8 +71,8 @@ domain/       entidades JPA
 Requisitos: JDK 21. Docker solo si querés usar PostgreSQL.
 
 ```bash
-git clone https://github.com/USUARIO/tienda-api.git
-cd tienda-api
+git clone https://github.com/RodolGiaco/API-Storage.git
+cd API-Storage
 ./mvnw spring-boot:run
 ```
 

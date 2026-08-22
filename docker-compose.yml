@@ -1,0 +1,31 @@
+# Entorno local de PostgreSQL para el perfil "postgres" de la app (ver
+# application-postgres.properties). Docker Compose lee las variables de
+# ".env" automaticamente -- copiar .env.example primero:
+#   cp .env.example .env
+#   docker compose up -d
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    # Sin esto, "docker compose up -d" devuelve el control apenas el
+    # contenedor arranca, no cuando Postgres ya acepta conexiones -- un
+    # ./mvnw spring-boot:run inmediatamente despues podria fallar al
+    # conectar. pg_isready consulta al propio Postgres si esta listo.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+# Named volume, no bind mount: los datos sobreviven a "docker compose down"
+# (que borra el contenedor) y solo se pierden con "docker compose down -v",
+# explicito.
+volumes:
+  postgres-data:

@@ -46,6 +46,8 @@ tests de integración y documentación OpenAPI.
 | Persistencia | Spring Data JPA · H2 (dev) · PostgreSQL |
 | Validación | Bean Validation |
 | Documentación | springdoc-openapi |
+| Observabilidad | Spring Boot Actuator (`health`, `info`) |
+| Infraestructura local | Docker Compose (PostgreSQL) |
 | Testing | JUnit 5 · AssertJ · Mockito · Testcontainers |
 | Build | Maven |
 | CI | GitHub Actions |
@@ -74,7 +76,17 @@ cd tienda-api
 ./mvnw spring-boot:run
 ```
 
-Arranca en `http://localhost:8080` con H2 en memoria.
+Arranca en `http://localhost:8080` con H2 en memoria (perfil `dev`, activo por
+default — no hace falta pasar `-Dspring-boot.run.profiles`).
+
+**Consola de H2**, para inspeccionar la base mientras la app corre:
+
+- URL — http://localhost:8080/h2-console
+- JDBC URL: `jdbc:h2:mem:api-storage` (tiene que coincidir exacto con el de
+  `application-dev.properties` — si no, conecta a una instancia en memoria
+  nueva y vacía, no a la que está usando la app)
+- User Name: `sa`
+- Password: *(vacío)*
 
 Con PostgreSQL:
 
@@ -83,6 +95,18 @@ cp .env.example .env
 docker compose up -d
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=postgres
 ```
+
+**Conectarse al PostgreSQL del contenedor** directamente (sin pasar por la
+app), con las credenciales de tu `.env`:
+
+```bash
+docker compose exec postgres psql -U api_storage -d api_storage
+```
+
+También podés apuntar cualquier cliente (DBeaver, TablePlus, `psql` local)
+a `localhost:5432` — o al puerto que hayas puesto en `POSTGRES_PORT` si
+5432 ya estaba ocupado en tu máquina — con el usuario y la base de tu
+`.env`.
 
 ## Documentación de la API
 
